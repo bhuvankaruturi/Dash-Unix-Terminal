@@ -37,6 +37,7 @@ void write_error(char* error_message) {
 	write(fileno(stderr), error_message, strlen(error_message));
 }
 
+//begin execution
 int main(int argc, char *argv[]) {
 	
 	// buffer to read in the input
