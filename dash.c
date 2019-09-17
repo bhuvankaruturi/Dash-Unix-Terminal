@@ -23,11 +23,11 @@ void display_header() {
 	printf("\n");
 	printf("############################################\n");
 	printf("##                                        ##\n");
-	printf("##                                        ##\n");
 	printf("##        **     DAllas SHell     **      ##\n");
 	printf("##                                        ##\n");
-	printf("##                                        ##\n");
 	printf("############################################\n");
+	printf("set path using: path <path_1> [<path_2>..]\n");
+	printf("override existing paths: path -o <new_path_1> [<new_path_2>..]\n");
 	printf("\n");
 	// header on launch - end
 }
