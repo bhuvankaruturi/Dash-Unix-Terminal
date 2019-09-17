@@ -103,15 +103,13 @@ int main(int argc, char *argv[]) {
 		// Handle parallel commands - Start
 		char* par_token;
 		char* par_rest = strdup(buffer);
-		char* par_commands[10];
 		int par_i = 0;
 		// split the commands based on & symbol
 		while((par_token = strtok_r(par_rest, "&", &par_rest)) && par_i < 10){
-			par_commands[par_i] = strdup(par_token);	
 			// split each parallel command string into tokens, with space as delimiter
 			char* token;
 			char* command;
-			char* rest = strdup(par_commands[par_i]);
+			char* rest = strdup(par_token);
 			int i = 0; 
 			int redirection_idx = -1;
 			bool parse_error = false;
