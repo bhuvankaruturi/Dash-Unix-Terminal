@@ -58,6 +58,7 @@ int main(int argc, char *argv[]) {
 	// standard error for the shell
 	char error_message[30] = "An error has occurred\n";
 	FILE *fp;
+	fp = NULL;
 	
 	// display header of the shell
 	display_header();
@@ -90,7 +91,10 @@ int main(int argc, char *argv[]) {
 		// batch mode
 		if (argc == 2) {
 			characters = getline(&buffer, &bufsize, fp);
-			if (characters < 0) { exit(0); }
+			if (characters < 0) { 
+				fclose(fp);
+				exit(0); 
+			}
 			// use write method so that we can have consistent behavior while redirecting to file
 			write(fileno(stdout), "dash> ", 7);
 			write(fileno(stdout), buffer, strlen(buffer));
@@ -184,6 +188,15 @@ int main(int argc, char *argv[]) {
 			args[i] = NULL;
 
 			// handle builtin functions - begin
+			// exit command
+			if (strcmp(command, "exit") == 0) {
+				// close file if running in batch mode
+				if (argc == 2) {
+					fclose(fp);
+				}
+				executed = true;
+				exit(0); 
+			}
 			// path command
 			if (strcmp(command, "path") == 0) {
 				executed = true;
@@ -207,11 +220,6 @@ int main(int argc, char *argv[]) {
 						num_paths++;
 					}
 				}
-			}
-			// exit command
-			if (strcmp(command, "exit") == 0) { 
-				executed = true;
-				exit(0); 
 			}
 			// cd command
 			if (strcmp(command, "cd") == 0) {
