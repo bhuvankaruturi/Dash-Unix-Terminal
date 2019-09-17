@@ -118,7 +118,7 @@ int main(int argc, char *argv[]) {
 			char *args[10];
 			// set executed to false for the current command
 			bool executed = false;
-			while((token = strtok_r(rest, " ", &rest)) && i < 10) {
+			while((token = strtok_r(rest, " \t", &rest)) && i < 10) {
 				if (i==0) {
 					command = strdup(token);
 				}
