@@ -46,11 +46,15 @@ int main(int argc, char *argv[]) {
 	int characters = 0;
 
 	// searchpaths
-	uint max_paths = 10;
+	uint max_paths = 12;
 	char *searchpath[max_paths];
 	searchpath[0] = "";
-	uint initial_paths = 1;
+	searchpath[1] = "/bin";
+	uint initial_paths = 2;
 	uint num_paths = initial_paths;
+
+	// maximum number of args per command
+	uint max_args = 15;
 
 	// process return code
 	pid_t proc_rc = -1;
@@ -107,9 +111,8 @@ int main(int argc, char *argv[]) {
 		// Handle parallel commands - Start
 		char* par_token;
 		char* par_rest = strdup(buffer);
-		int par_i = 0;
 		// split the commands based on & symbol
-		while((par_token = strtok_r(par_rest, "&", &par_rest)) && par_i < 10){
+		while((par_token = strtok_r(par_rest, "&", &par_rest))){
 			// split each parallel command string into tokens, with space as delimiter
 			char* token;
 			char* command;
@@ -117,10 +120,10 @@ int main(int argc, char *argv[]) {
 			int i = 0; 
 			int redirection_idx = -1;
 			bool parse_error = false;
-			char *args[10];
+			char *args[max_args];
 			// set executed to false for the current command
 			bool executed = false;
-			while((token = strtok_r(rest, " \t", &rest)) && i < 10) {
+			while((token = strtok_r(rest, " \t", &rest)) && i < max_args) {
 				if (i==0) {
 					command = strdup(token);
 				}
@@ -313,7 +316,6 @@ int main(int argc, char *argv[]) {
 					}
 				}
 			} // handle external commands - end
-			par_i++; // increment parallel command counter
 		} // handle parallel commands - end
 		if (proc_rc > 0) { 
 			int status;
