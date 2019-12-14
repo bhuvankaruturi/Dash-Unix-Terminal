@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
 		// interactive mode
 		if (argc == 1) {
 			// display CLI prompt
-			printf("dash> ");
+			write(fileno(stdout), "dash> ", 7);
 			characters = getline(&buffer, &bufsize, stdin);
 		}
 		// batch mode
