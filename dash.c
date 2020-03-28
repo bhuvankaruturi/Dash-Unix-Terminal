@@ -83,9 +83,6 @@ int main(int argc, char *argv[]) {
 	}
 	// loop until exit is entered or the end of file is encountered
 	while(strcmp(buffer, "exit") != 0 && (characters >= 0 || argc == 1)) {
-		// save stdout and stderr streams
-		int save_out = dup(fileno(stdout));
-		int save_err = dup(fileno(stderr));
 		// interactive mode
 		if (argc == 1) {
 			// display CLI prompt
@@ -113,6 +110,9 @@ int main(int argc, char *argv[]) {
 		char* par_rest = strdup(buffer);
 		// split the commands based on & symbol
 		while((par_token = strtok_r(par_rest, "&", &par_rest))){
+			// save stdout and stderr streams
+			int save_out = dup(fileno(stdout));
+			int save_err = dup(fileno(stderr));
 			// split each parallel command string into tokens, with space as delimiter
 			char* token;
 			char* command;
@@ -310,9 +310,7 @@ int main(int argc, char *argv[]) {
 						waitpid(proc_rc, &status, WUNTRACED);
 						// if the child has terminated then flush the stream 
 						// and reset the stdout and stderr back to save_out and save_err
-						if (WIFEXITED(status)) {
-							flushstream(fd_out, fd_err, save_out, save_err);
-						}
+						flushstream(fd_out, fd_err, save_out, save_err);
 					}
 				}
 			} // handle external commands - end
